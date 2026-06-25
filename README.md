@@ -33,6 +33,13 @@ Suggested screenshots:
 - Add or update confirmation
 - Delete confirmation flow
 
+## Live Demo
+
+A frontend-only (localStorage) live demo is available at:  
+[https://justhaanya.github.io/Student-Information-System/](https://justhaanya.github.io/Student-Information-System/)
+
+> **Note:** The live demo is a GitHub Pages version using browser local storage because GitHub Pages cannot host PHP/MySQL backends. The source code in the root directory still contains the full PHP + MySQL implementation.
+
 ## Database Setup
 
 The database backup is available at:

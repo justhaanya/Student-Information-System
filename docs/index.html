@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>Student Information System</title>
+    <meta name="description" content="A responsive Student Information System with CRUD operations built using PHP, MySQL, and Bootstrap.">
+    <style>
+        /* Light Sky Blue Theme */
+        :root {
+            --sky: #87CEEB;
+            --light-sky: #B0E2FF;
+            --bright-sky: #6ca6cd;
+            --text: #2c3e50;
+        }
+    
+        body {
+            background: linear-gradient(160deg, var(--light-sky), var(--sky));
+            color: var(--text);
+            min-height: 100vh;
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 2rem;
+        }
+    
+        /* Airy Forms */
+        .form-control {
+            background: rgba(255,255,255,0.9);
+            border: 2px solid var(--bright-sky);
+            color: var(--text);
+            border-radius: 8px;
+            padding: 12px;
+            transition: all 0.3s ease;
+        }
+    
+        .form-control:focus {
+            border-color: var(--sky);
+            box-shadow: 0 0 15px rgba(140,190,230,0.4);
+        }
+    
+        /* Cloud Tables */
+        table {
+            background: rgba(255,255,255,0.9);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(140,190,230,0.2);
+        }
+    
+        th {
+            background: linear-gradient(135deg, var(--light-sky), var(--sky));
+            color: white;
+            padding: 1rem;
+        }
+    
+        td {
+            padding: 0.8rem;
+            border-bottom: 1px solid rgba(140,190,230,0.3);
+        }
+    
+        tr:hover {
+            background: rgba(140,190,230,0.1);
+        }
+    
+        /* Sky Buttons */
+        .btn {
+            background: linear-gradient(135deg, var(--light-sky), var(--sky));
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            border: none;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+    
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg,
+                transparent,
+                rgba(255,255,255,0.4),
+                transparent);
+            animation: shine 3s infinite;
+        }
+    
+        .btn.delete {
+            background: linear-gradient(135deg, #FFB6C1, #FF69B4);
+        }
+    
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(140,190,230,0.3);
+        }
+    
+        /* Breezy Navigation */
+        .nav-link {
+            color: var(--text);
+            padding: 10px 20px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            background: rgba(255,255,255,0.3);
+        }
+    
+        .nav-link.active, .nav-link:hover {
+            background: linear-gradient(135deg, var(--light-sky), var(--sky));
+            color: white !important;
+        }
+    
+        /* Fluffy Sections */
+        #formSection, #tableSection {
+            background: rgba(255,255,255,0.85);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            box-shadow: 0 5px 20px rgba(140,190,230,0.2);
+        }
+    
+        @keyframes shine {
+            0% { transform: translateX(-50%) rotate(45deg); }
+            100% { transform: translateX(150%) rotate(45deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="alert alert-info text-center mb-0 rounded-0" role="alert" style="background: rgba(255,255,255,0.9); border: none; border-bottom: 2px solid var(--bright-sky); color: var(--text);">
+        <strong>Demo Mode:</strong> This version uses your browser's local storage. No data is sent to a server.
+    </div>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Student CRUD</a>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#" id="showForm">Student Details</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" id="showTable">Student Data</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <div id="formSection">
+            <div class="text-center">
+                <h1 class="display-5 mb-5"><strong>Student Details</strong></h1>
+            </div>
+            <form id="student-form" autocomplete="off">
+                <div class="mb-3">
+                    <label for="firstName" class="form-label">First Name</label>
+                    <input type="text" class="form-control" id="firstName" placeholder="Enter First Name">
+                </div>
+                <div class="mb-3">
+                    <label for="lastName" class="form-label">Last Name</label>
+                    <input type="text" class="form-control" id="lastName" placeholder="Enter Last Name">
+                </div>
+                <div class="mb-3">
+                    <label for="rollNo" class="form-label">Roll No</label>
+                    <input type="text" class="form-control" id="rollNo" placeholder="Enter Roll No">
+                </div>
+                <div class="mb-3">
+                    <label for="studentClass" class="form-label">Class</label>
+                    <select class="form-control" id="studentClass">
+                        <option value="">Select Class</option>
+                        <option value="Fy.Bsc.IT">Fy.Bsc.IT</option>
+                        <option value="Fy.Bsc.CS">Fy.Bsc.CS</option>
+                        <option value="Fy.Bsc.DS">Fy.Bsc.DS</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-success w-100">Submit</button>
+            </form>
+        </div>
+
+        <div id="tableSection" style="display: none;">
+            <div class="text-center">
+                <h1 class="display-5 mb-5"><strong>Student Data</strong></h1>
+            </div>
+            <table class="table table-dark table-striped text-center">
+                <thead>
+                    <tr>
+                        <th>SR. No.</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Roll No</th>
+                        <th>Class</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="student-list"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    
+</body>
+</html>
